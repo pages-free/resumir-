@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumidor AI Minimalista</title>
+    <style>
+        /* Estilos CSS minimalistas */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: #f9f9f9;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        h1 {
+            color: #2d3436;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            resize: vertical;
+            margin-bottom: 1rem;
+            font-size: 16px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 6px;
+            background: #2d3436;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: #434d50;
+        }
+
+        #result {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #e0e0e0;
+            border-top-color: #2d3436;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resumidor AI ✨</h1>
+        <textarea 
+            id="inputText" 
+            placeholder="Pega tu texto aquí..."
+        ></textarea>
+        <div class="controls">
+            <button onclick="generateSummary('short')">Resumen Corto</button>
+            <button onclick="generateSummary('medium')">Resumen Medio</button>
+            <button onclick="generateSummary('long')">Resumen Detallado</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Lógica de resumen (simulación - para producción usar una API)
+        function summarizeText(text, length) {
+            // Aquí iría la conexión a una API real de resumen
+            // Esta es una simulación básica
+            const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
+            
+            const lengthMap = {
+                short: 2,
+                medium: 4,
+                long: 6
+            };
+
+            return sentences.slice(0, lengthMap[length]).join(' ') + '...';
+        }
+
+        // Interfaz de usuario
+        function generateSummary(length) {
+            const input = document.getElementById('inputText');
+            const result = document.getElementById('result');
+            
+            if (!input.value.trim()) {
+                result.textContent = "Por favor ingresa texto para resumir";
+                return;
+            }
+
+            result.textContent = "Generando resumen...";
+            input.classList.add('loading');
+
+            // Simulación de delay para carga
+            setTimeout(() => {
+                const summary = summarizeText(input.value, length);
+                result.textContent = summary;
+                input.classList.remove('loading');
+            }, 800);
+        }
+    </script>
+</body>
+</html>
